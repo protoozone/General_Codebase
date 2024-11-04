@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import math
 import numpy as np
 
+filePath = "dialogue.csv" # Add your dialogue file location here
+
 # Finds the RMSE between a current set of dialogue and the ideal target for dialogue within a narrative piece
 def find_RMS(keys, ideal, actual, printer=False):
     sum = 0
@@ -51,7 +53,7 @@ ideal_counts = {
 }
 
 # Filepath of dialogue data
-csv_file = r"C:\Users\Justen Webster\OneDrive\Documents\Python Scripts\Dialogue Data\DE Titus to Klaasje.csv"
+csv_file = filePath
 
 # CSVs: "Natlan AQ3/4.csv", "5.1 Event 2.csv", "Springs TQ1.csv", "Fontaine AQ3.csv"
 # "DE Titus to Klaasje.csv", "Va-11 Hall-A Stella 2.csv"
