@@ -142,3 +142,48 @@ plt.show()
 
 # Print out RMS value of overall quest
 print("\nRMS = " + str(find_RMS(ordered_keys, ideal_counts, dialogue_type_counts, printer=True)))
+
+# Pathway for timeline graphs!
+# # Assign colours to each dialogue entry based on its type
+# data['Colour'] = data['Dialogue Type'].map(colour_map)
+
+# # Get the total number of dialogue entries and calculate how many graphs we need
+# total_entries = len(data)
+# entries_per_plot = 400
+# num_plots = math.ceil(total_entries / entries_per_plot)
+
+# # Create a figure for the multiple subplots
+# fig, axes = plt.subplots(num_plots, 1, figsize=(12, 2 * num_plots))
+
+# # Plot each chunk of 400 entries as a separate horizontal bar
+# for i in range(num_plots):
+#     start_index = i * entries_per_plot
+#     end_index = min(start_index + entries_per_plot, total_entries)
+
+#     ax = axes[i] if num_plots > 1 else axes  # In case there's only one plot
+    
+#     # Adjust the x-axis limits for the current plot (it should start at 0 and go to the number of entries in the chunk)
+#     ax.barh(y=0, width=1, left=list(range(0, end_index - start_index)),
+#             color=data['Colour'].iloc[start_index:end_index], edgecolor='black')
+
+#     # Set x-axis limits based on the number of dialogue entries for this chunk
+#     ax.set_xlim(0, (start_index+entries_per_plot) - start_index)
+
+#     # Remove y-ticks and labels
+#     ax.set_yticks([])
+
+#     # Add a title for this segment of entries
+#     ax.set_title(f'Entries {start_index + 1} to {end_index}')
+
+# # Add a legend to the last subplot
+# handles = [plt.Rectangle((0, 0), 1, 1, color=colour_map[dt]) for dt in colour_map.keys()]
+# axes[-1].legend(handles, colour_map.keys(), title="Dialogue Types", bbox_to_anchor=(1.05, 1), loc='upper left')
+
+# # Set the overall figure title
+# fig.suptitle('Chronological Distribution of Dialogue Types in Natlan AQ3', fontsize=16)
+
+# # Adjust layout to prevent clipping
+# plt.tight_layout(rect=[0, 0, 1, 0.96])
+
+# # Display the plots
+# plt.show()
