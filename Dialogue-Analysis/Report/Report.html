@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+        }
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            overflow: auto;
+        }
+        .image-block {
+            margin: 20px 0;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .back-button {
+            position: fixed; /* Keep it fixed in the viewport */
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000; /* Ensure it's on top of other elements */
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="window.location.href='Coding Portfolio.html'">Back</button>
+
+    <h1>Analytics In Media</h1>
+
+    <h3>Intro: </h3>
+    <p>This project was developed for the purpose of analyzing various kinds of media and why they do/do not connect with individuals based particularly on Dialogue Distribution.</p>
+
+    <h3>Hypothesis: </h3>
+    <p>Dialogue must retain a balance of:</p> 
+    
+    <h3>For Interactive Visual Media (Games & Visual Novels):</h3>
+    <ul>
+        <li>30% Introspective and Personal Thought (Explicitly where character beliefs are challenged or reconsidered or supported)</li>
+
+        <li>10% Exposition (Where a character explicitly states information about the past, present, or future in a matter of fact means)</li>
+
+        <li>10% Direct Opinion (Direct thoughts or ideas expressed by a character, typically a means to convey an opinion directly to the audience)</li>
+
+        <li>30% Reactionary (A character's immediate reaction to an event, without thought or consideration)</li>
+
+        <li>5% Filler (Repeated information or other such lines that could be removed without impacting the flow of the story or information)</li>
+
+        <li>5% Objective (Characters relaying exactly what they intend to do or lines designed to progress the plot)</li>
+
+        <li>10% Player Choice (Selectable choices that actively change the progression of the plot or proceeding dialogues)</li>
+    </ul>
+
+    <h3>Traditional Literature (Novels & Light Novels):</h3>
+    <ul>
+        <li>25% Introspective</li>
+
+        <li>10% Exposition</li>
+
+        <li>10% Direct Opinion</li>
+
+        <li>25% Reactionary</li>
+
+        <li>5% Filler</li>
+
+        <li>5% Objective</li>
+
+        <li>20% Descriptive (Descriptions of places, people, and items, sensory experiences, and other immersive lines)</li>
+    </ul>
+    
+    <h3>Film & Non-Interactive Visual Media (Movies & TV):</h3>
+    <ul>
+        <li>30% Introspective</li>
+
+        <li>15% Exposition</li>
+
+        <li>10% Direct Opinion</li>
+
+        <li>30% Reactionary</li>
+
+        <li>5% Filler</li>
+
+        <li>10% Objective</li>
+    </ul>
+
+    <h3>Null Hypothesis: </h3>
+    <p>The emotional engagement of various kinds of media is not reliant on the proportion of dialogue, dialogue proportions simply adjust the pacing and feel of various genres.</p>
+
+    <h2>Dialogue Parsing (Python)</h2>
+    <div class="code-block">
+        <pre>
+# Screenshots the dialogue and extracts the text
+def capture_and_extract():
+    
+    # Screenshot the Dialogue Region
+    x1, y1, x2, y2 = 521, 830, 1885, 924  # Define your area here (adjust as needed)
+    img = ImageGrab.grab(bbox=(x1, y1, x2, y2))
+    img_np = np.array(img)  # Convert to numpy array for processing
+
+    # Grayscale the image
+    gray = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
+
+    # Binary mask to isolate white text (can be adjusted for different coloured text)
+    lower_bound = np.array([230, 230, 230])  # Minimum color for white
+    upper_bound = np.array([255, 255, 255])  # Maximum color for white
+
+    mask = cv2.inRange(img_np, lower_bound, upper_bound)
+    mask_inv = cv2.bitwise_not(mask)
+
+    isolated_text = cv2.bitwise_and(img_np, img_np, mask=mask)
+    isolated_gray = cv2.cvtColor(isolated_text, cv2.COLOR_BGR2GRAY)
+
+    # Convert the image to a string via pytesseract extraction
+    text = pytesseract.image_to_string(isolated_gray, lang='eng', config='--psm 6')
+    
+    # Clear the text in the dialogue box and insert the extracted text, refresh the window
+    dialogue_text.delete("1.0", tk.END) 
+    dialogue_text.insert(tk.END, text.strip()) 
+    root.deiconify() 
+        </pre>
+    </div>
+    <p>The primary means of extracting dialogue was by using pytesseract and binary masking to increase the accuracy.</p>
+
+    <div class="code-block">
+        <pre>
+# Drop-down for dialogue type selection
+tk.Label(root, text="Select Dialogue Type:").pack(pady=5)
+dialogue_type_var = tk.StringVar()
+dialogue_type_dropdown = ttk.Combobox(root, textvariable=dialogue_type_var, values=dialogue_types, state="readonly")
+dialogue_type_dropdown.pack(pady=5)
+        </pre>
+    </div>
+    
+    <p> The initial program required manual selection of the dialogue types, which was honestly painstaking.</p>
+
+    <div class="image-block">
+        <img src="project1/image1.png" alt="Dialogue Parser GUI">
+        <p>This is the graphical interface of the Dialogue Parser, with a live tracker for dialogue distribution and drop-down menu selections.</p>
+    </div>
+
+    <h2>Dialogue Analysis (Also Python)</h2>
+    <div class="code-block">
+        <pre>
+# Setting up the figure with two pie charts
+fig, axs = plt.subplots(1, 2, figsize=(12, 6))
+
+# Actual distribution pie chart
+axs[0].pie(actual_counts_filtered, labels=actual_counts_filtered.index, autopct='%1.1f%%', startangle=90, colors=actual_colors)
+axs[0].set_title('Natlan AQ3 Dialogue Distribution')
+
+# Ideal distribution pie chart
+axs[1].pie(ideal_counts_filtered, labels=ideal_counts_filtered.index, autopct='%1.1f%%', startangle=90, colors=ideal_colors)
+axs[1].set_title('Ideal Dialogue Distribution')
+axs[0].text(-1, -1.3, 'Lines of dialogue = ' + str(int(data.size/4)), fontsize=12, bbox=dict(facecolor='white', alpha=0.5))
+
+# Show the plots
+plt.tight_layout()  # Adjust layout to prevent clipping
+plt.show()
+        </pre>
+    </div>
+    <p>By some basic Matplotlib implementations we can create a graphical comparison between the ideal target and the actual dialogue distribution of the story/game/movie</p>
+
+    <div class="image-block">
+        <img src="project1/image2.png" alt="Pie Chart comparison between Genshin Impact's Natlan Archon Quest Act 3's dialogue distribution and the ideal target for interactive media">
+        <p>Pie Chart graphs generated by Dialogue Parser & Analyzer, comparing Genshin Impact's Natlan Archon Quest Act 3's dialogue distribution to the ideal interactive media distribution.</p>
+    </div>
+
+    <div class="code-block">
+        <pre>
+# Assign colors to each dialogue entry based on its type
+data['Color'] = data['Dialogue Type'].map(color_map)
+
+# Get the number of timeline segments
+total_entries = len(data)
+entries_per_plot = 400 # Set based on graphical capabilities of your device 
+num_plots = math.ceil(total_entries / entries_per_plot)
+
+# Create each different figure
+fig, axes = plt.subplots(num_plots, 1, figsize=(12, 2 * num_plots))
+
+# Place each chunk of entries as a separate horizontal bar
+for i in range(num_plots):
+    start_index = i * entries_per_plot
+    end_index = min(start_index + entries_per_plot, total_entries)
+
+    ax = axes[i] if num_plots > 1 else axes  # In case there's only one plot
+    
+    # Adjust the x-axis limits for the current plot to ensure the plot stacks
+    ax.barh(y=0, width=1, left=list(range(0, end_index - start_index)),
+            color=data['Color'].iloc[start_index:end_index], edgecolor='black')
+
+    ax.set_xlim(0, (start_index+entries_per_plot) - start_index)
+
+    # Remove y-ticks and labels
+    ax.set_yticks([])
+
+    # Add a title for each timeline segment
+    ax.set_title(f'Entries {start_index + 1} to {end_index}')
+
+# Add a legend for the lower corner
+handles = [plt.Rectangle((0, 0), 1, 1, color=color_map[dt]) for dt in color_map.keys()]
+axes[-1].legend(handles, color_map.keys(), title="Dialogue Types", bbox_to_anchor=(1.05, 1), loc='upper left')
+
+# Set title
+fig.suptitle('Chronological Distribution of Dialogue Types in Natlan AQ3', fontsize=16)
+
+# Preventing clipping with the figures
+plt.tight_layout(rect=[0, 0, 1, 0.96])
+
+# Show the plots
+plt.show()
+        </pre>
+    </div>
+    <p>Getting a timeline of how dialogue progresses graphically is more complex, as it requires the timeline segments to be stacked so as not to cause significant GPU lag. It gives a strong indication of how dialogue types are paced throughout a story, however.</p>
+
+    <div class="image-block">
+        <img src="project1/image3.png" alt="Timeline of Dialogue distribution throughout Genshin Impact's Natlan Archon Quest Act 3">
+        <p>Timeline of how dialogue is distributed throughout Genshin Impact's Natlan Archon Quest Act 3.</p>
+    </div>
+
+    <h2>Summary</h2>
+    <p>Overall, it appears that Genshin Impact's particular dialogue distribution is comparitively oversaturated with Exposition and Opinion, prioritising telling the player  
+        what to think rather than letting them come to their own conclusions. This is a common issue expressed with a majority of the playerbase. Characters have also been 
+        reported as shallow and one-dimensional, which is heavily supported by the variance in introspection expressed by the characters. 
+    </p>
+
+    <p>
+        Despite it's category of being Interactive Media, Genshin Impact's most recent questline has an overall variance of 6.87 (Root Square Mean Error compared to target, max 17 min 0).
+    </p>
+
+    <h2>Disco Elysium (Titus to Klaasje)</h2>
+    
+    <div class="image-block">
+        <img src="project1/image4.png" alt="Pie Chart comparing Disco Elysium's Dialogue Distribution to the ideal target">
+        <p>Pie Charts showcasing the difference between Disco Elysium's Dialogue and the ideal.</p>
+    </div>
+
+    <div class="image-block">
+        <img src="project1/image5.png" alt="Timeline of Disco Elysium's Dialogue Distribution">
+        <p>Timeline of Disco Elysium's dialogue from the Titus to Klaasje arc.</p>
+    </div>
+
+    <h2>Summary</h2>
+    <p>Disco Elysium has a nearly even balance of dialogue types, with less emphasis on direct opinion and no filler.
+        There is a significantly high proportion of Player Choice, which echoes player sentiment that Disco Elysium has "too many options"
+        although this is a nicer issue to have than the more commonly seen issues of overexpositing or uninteresting characters.  
+    </p>
+
+    <p>
+        Disco Elysium's Titus to Klaasje story section has an overall variance of 3.12.
+    </p>
+
+    <h2>Conclusion</h2>
+    <p>It's clear from these results so far that player engagement is almost directly proportional to the RMSE of dialogue against 
+        it's target dialogue distribution. Disco Elysium was a clear contendor for best story, and unsurprisingly has a lower RMSE
+        while Genshin Impact has a significantly higher value (3.12 vs 6.87). 
+    </p>
+
+    <p>These results are clearly reflected in the sentiments that both critiques and casual players of these games have levied.
+        A key surprise as well is the notimation of Disco Elysium as the greatest story game of all time despite having an RMSE of 3.12.
+        This appears to indicate that the ideal targets require further refinement or that a mix of the score, plot, or character building 
+        have elevated the narrative in the eyes of the public. 
+
+        At present, I tentatively conclude that RMSE's calculated supports my hypothesis. The structure and way a game delivers it's story
+        is vital and even predictive to the game's narrative success. 
+    </p>
+
+</body>
+</html>
