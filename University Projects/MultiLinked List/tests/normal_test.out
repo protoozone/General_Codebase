@@ -1,0 +1,30 @@
+List 0: 1 -> 2.30 -> lol -> p -> 
+Nested 1: {List 0} -> {List 0} -> abba -> {List 0}
+1 -> 2.30 -> lol -> p -> 
+{List 0} -> {List 0} -> abba -> {List 0}
+Number of lists: 2
+List 0
+Nested 1
+1 -> 2.30 -> lol -> p -> 
+{1 -> 2.30 -> lol -> p -> } -> {1 -> 2.30 -> lol -> p -> } -> abba -> {1 -> 2.30 -> lol -> p -> }
+List 0: b -> 1 -> 2.30 -> lol -> p -> 
+b -> 1 -> 2.30 -> lol -> p -> 
+{b -> 1 -> 2.30 -> lol -> p -> } -> {b -> 1 -> 2.30 -> lol -> p -> } -> abba -> {b -> 1 -> 2.30 -> lol -> p -> }
+List 0: b -> 1 -> lol -> p -> 
+{b -> 1 -> lol -> p -> } -> {b -> 1 -> lol -> p -> } -> abba -> {b -> 1 -> lol -> p -> }
+Nested 1: {List 0} -> {List 0} -> abba -> {List 0} -> {List 0}
+{b -> 1 -> lol -> p -> } -> {b -> 1 -> lol -> p -> } -> abba -> {b -> 1 -> lol -> p -> } -> {b -> 1 -> lol -> p -> }
+reference -> reference -> string -> reference -> reference
+char -> int -> string -> char -> string
+List 0: 1 -> lol -> p -> 
+List 0: 1 -> lol -> p
+{1 -> lol -> p} -> {1 -> lol -> p} -> abba -> {1 -> lol -> p} -> {1 -> lol -> p}
+Nested 2: lol -> 1 -> 2 -> 3.00 -> p -> {List 0}
+lol -> 1 -> 2 -> 3.00 -> p -> {List 0}
+lol -> 1 -> 2 -> 3.00 -> p -> {1 -> lol -> p}
+string -> int -> int -> float -> char -> reference
+List 2 has been removed.
+
+Number of lists: 2
+List 0
+Nested 1

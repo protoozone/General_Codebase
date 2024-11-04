@@ -1,0 +1,25 @@
+List 0: 
+List 1: 
+List 2: 
+List 3: 
+List 0 has been removed.
+
+Number of lists: 3
+List 1
+List 2
+List 3
+INVALID COMMAND: REMOVE
+List 0: lol
+List 1 has been removed.
+
+Number of lists: 2
+List 0
+List 2
+List 3
+INVALID COMMAND: VIEW
+INVALID COMMAND: VIEW-NESTED
+INVALID COMMAND: DELETE
+INVALID COMMAND: REMOVE
+List 2: lol
+INVALID COMMAND: REMOVE
+INVALID COMMAND: VIEW
