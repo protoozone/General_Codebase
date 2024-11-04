@@ -41,7 +41,7 @@ async function shortestPathInGrid(data) {
       return path; // Return the constructed path
     }
 
-    // Explore neighbors
+    // Explore neighbours
     for (const { dir, move } of directions) {
       const newX = x + dir[0];
       const newY = y + dir[1];
@@ -64,51 +64,51 @@ async function shortestPathInGrid(data) {
 // Finds the colouring of a graph with vertices and edge data
 //Input: array containing vertices num and edge array of pair arrays
 //Output: binary array containing the colouring of the graph (assuming 0 as initial)
-async function twoColoring(data) {
+async function twoColouring(data) {
   const vertices = data[0];
   const edges = data[1];
 
-  // Initialize the graph as an adjacency list
+  // Initialise the graph as an adjacency list
   const graph = Array.from({ length: vertices }, () => []);
   for (const [u, v] of edges) {
     graph[u].push(v);
     graph[v].push(u); // Since the graph is undirected
   }
 
-  const color = Array(vertices).fill(-1); // -1 indicates uncolored
+  const colour = Array(vertices).fill(-1); // -1 indicates uncoloured
 
-  // Function to perform BFS for coloring
+  // Function to perform BFS for colouring
   const bfs = (start) => {
     const queue = [start];
-    color[start] = 0; // Color the starting vertex with color 0
+    colour[start] = 0; // colour the starting vertex with colour 0
 
     while (queue.length > 0) {
       const current = queue.shift();
 
-      for (const neighbor of graph[current]) {
-        if (color[neighbor] === -1) {
-          // Assign the opposite color to the neighbor
-          color[neighbor] = 1 - color[current];
-          queue.push(neighbor);
-        } else if (color[neighbor] === color[current]) {
-          // A conflict in coloring means the graph is not bipartite
+      for (const neighbour of graph[current]) {
+        if (colour[neighbour] === -1) {
+          // Assign the opposite colour to the neighbour
+          colour[neighbour] = 1 - colour[current];
+          queue.push(neighbour);
+        } else if (colour[neighbour] === colour[current]) {
+          // A conflict in colouring means the graph is not bipartite
           return false; // Not bipartite
         }
       }
     }
-    return true; // Successfully colored this component
+    return true; // Successfully coloured this component
   };
 
   // Check all vertices to ensure all components are processed
   for (let i = 0; i < vertices; i++) {
-    if (color[i] === -1) { // If this vertex is uncolored
+    if (colour[i] === -1) { // If this vertex is uncoloured
       if (!bfs(i)) {
         return []; // Return early if not bipartite
       }
     }
   }
 
-  return color; // Return the color array if bipartite
+  return colour; // Return the colour array if bipartite
 }
 
 // Finds the optimal amount achievable from trading on stock histories
@@ -131,7 +131,7 @@ async function stockTrader(prices, n) {
     return totalProfit;
   }
 
-  // Initialize the DP table
+  // Initialise the DP table
   const dp = Array.from({ length: n + 1 }, () => Array(days).fill(0));
 
   // Fill the DP table
@@ -190,7 +190,7 @@ async function uniquePathsGridII(data) {
     return 0;
   }
 
-  // Create a DP table initialized to 0
+  // Create a DP table Initialised to 0
   const dp = Array.from({ length: m }, () => Array(n).fill(0));
   dp[0][0] = 1; // Starting point
 
@@ -265,7 +265,7 @@ async function findLargestPrimeFactor(data) {
 //Inputs: target sum, array of numbers that can be used to achieve the target
 //Output: number of ways the sum can be achieved
 async function totalWaysToSum(target, elements) {
-  // Initialize the DP array
+  // Initialise the DP array
   const dp = new Array(target + 1).fill(0);
   dp[0] = 1; // There's one way to achieve the sum of 0
 
@@ -283,7 +283,7 @@ async function totalWaysToSum(target, elements) {
 
 // Function to handle the "Array Jumping Game"
 async function arrayJumpingGame(data) {
-  let range = 0; // Initialize range variable
+  let range = 0; // Initialise range variable
 
   // Traverse the array backward
   for (let i = data.length - 1; i >= 0; i--) {
